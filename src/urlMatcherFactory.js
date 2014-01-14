@@ -74,7 +74,7 @@ function UrlMatcher(pattern, strict) {
   }
 
   this.source = pattern;
-  this.strict = typeof strict == 'boolean' ? strict : true;
+  this.strict = typeof strict === 'boolean' ? strict : true;
 
   // Split into static segments separated by path parameter placeholders.
   // The number of segments is always 1 more than the number of parameters.

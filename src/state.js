@@ -715,7 +715,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
 
         $state.transition = null;
         evt = $rootScope.$broadcast('$stateChangeError', to.self, toParams, from.self, fromParams, error);
-        if (evt.defaultPrevented) {
+        if (!evt.defaultPrevented) {
           syncUrl();
         }
 

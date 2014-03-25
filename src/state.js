@@ -1,3 +1,5 @@
+// ADDED: make it possible to prevent the default $stateChangeError logic
+
 /**
  * @ngdoc object
  * @name ui.router.state.$stateProvider
@@ -235,9 +237,9 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * @methodOf ui.router.state.$stateProvider
    *
    * @description
-   * Allows you to extend (carefully) or override (at your own peril) the 
-   * `stateBuilder` object used internally by `$stateProvider`. This can be used 
-   * to add custom functionality to ui-router, for example inferring templateUrl 
+   * Allows you to extend (carefully) or override (at your own peril) the
+   * `stateBuilder` object used internally by `$stateProvider`. This can be used
+   * to add custom functionality to ui-router, for example inferring templateUrl
    * based on the state name.
    *
    * When passing only a name, it returns the current (original or decorated) builder
@@ -246,14 +248,14 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * The builder functions that can be decorated are listed below. Though not all
    * necessarily have a good use case for decoration, that is up to you to decide.
    *
-   * In addition, users can attach custom decorators, which will generate new 
-   * properties within the state's internal definition. There is currently no clear 
-   * use-case for this beyond accessing internal states (i.e. $state.$current), 
-   * however, expect this to become increasingly relevant as we introduce additional 
+   * In addition, users can attach custom decorators, which will generate new
+   * properties within the state's internal definition. There is currently no clear
+   * use-case for this beyond accessing internal states (i.e. $state.$current),
+   * however, expect this to become increasingly relevant as we introduce additional
    * meta-programming features.
    *
-   * **Warning**: Decorators should not be interdependent because the order of 
-   * execution of the builder functions in nondeterministic. Builder functions 
+   * **Warning**: Decorators should not be interdependent because the order of
+   * execution of the builder functions in nondeterministic. Builder functions
    * should only be dependent on the state definition object and super function.
    *
    *
@@ -263,21 +265,21 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * - data - `{object}` - returns state data, including any inherited data that is not
    *   overridden by own values (if any).
    * - url - `{object}` - returns a UrlMatcher or null.
-   * - navigable - returns closest ancestor state that has a URL (aka is 
+   * - navigable - returns closest ancestor state that has a URL (aka is
    *   navigable).
-   * - params - `{object}` - returns an array of state params that are ensured to 
+   * - params - `{object}` - returns an array of state params that are ensured to
    *   be a super-set of parent's params.
-   * - views - `{object}` - returns a views object where each key is an absolute view 
-   *   name (i.e. "viewName@stateName") and each value is the config object 
-   *   (template, controller) for the view. Even when you don't use the views object 
+   * - views - `{object}` - returns a views object where each key is an absolute view
+   *   name (i.e. "viewName@stateName") and each value is the config object
+   *   (template, controller) for the view. Even when you don't use the views object
    *   explicitly on a state config, one is still created for you internally.
-   *   So by decorating this builder function you have access to decorating template 
+   *   So by decorating this builder function you have access to decorating template
    *   and controller properties.
-   * - ownParams - `{object}` - returns an array of params that belong to the state, 
+   * - ownParams - `{object}` - returns an array of params that belong to the state,
    *   not including any params defined by ancestor states.
-   * - path - `{string}` - returns the full path from the root down to this state. 
+   * - path - `{string}` - returns the full path from the root down to this state.
    *   Needed for state activation.
-   * - includes - `{object}` - returns an object that includes every state that 
+   * - includes - `{object}` - returns an object that includes every state that
    *   would pass a '$state.includes()' test.
    *
    * @example
@@ -310,8 +312,8 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * // and /partials/home/contact/item.html, respectively.
    * </pre>
    *
-   * @param {string} name The name of the builder function to decorate. 
-   * @param {object} func A function that is responsible for decorating the original 
+   * @param {string} name The name of the builder function to decorate.
+   * @param {object} func A function that is responsible for decorating the original
    * builder function. The function receives two parameters:
    *
    *   - `{object}` - state - The state config object.
@@ -343,7 +345,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * @description
    * Registers a state configuration under a given state name. The stateConfig object
    * has the following acceptable properties.
-   * 
+   *
    * - [`template`, `templateUrl`, `templateProvider`] - There are three ways to setup
    *   your templates.
    *
@@ -365,20 +367,20 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    *   controller.
    *
    * - `{string}` - url - A url with optional parameters. When a state is navigated or
-   *   transitioned to, the `$stateParams` service will be populated with any 
+   *   transitioned to, the `$stateParams` service will be populated with any
    *   parameters that were passed.
    *
-   * - `{object}` - params - An array of parameter names or regular expressions. Only 
+   * - `{object}` - params - An array of parameter names or regular expressions. Only
    *   use this within a state if you are not using url. Otherwise you can specify your
-   *   parameters within the url. When a state is navigated or transitioned to, the 
+   *   parameters within the url. When a state is navigated or transitioned to, the
    *   $stateParams service will be populated with any parameters that were passed.
    *
-   * - `{object}` - views - Use the views property to set up multiple views. 
-   *   If you don't need multiple views within a single state this property is not 
-   *   needed. Tip: remember that often nested views are more useful and powerful 
+   * - `{object}` - views - Use the views property to set up multiple views.
+   *   If you don't need multiple views within a single state this property is not
+   *   needed. Tip: remember that often nested views are more useful and powerful
    *   than multiple sibling views.
    *
-   * - `{boolean}` - abstract - An abstract state will never be directly activated, 
+   * - `{boolean}` - abstract - An abstract state will never be directly activated,
    *   but can provide inherited properties to its common children states.
    *
    * - `{object}` - onEnter - Callback function for when a state is entered. Good way
@@ -410,7 +412,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    *   .state("contacts", {});
    * </pre>
    *
-   * @param {string} name A unique state name, e.g. "home", "about", "contacts". 
+   * @param {string} name A unique state name, e.g. "home", "about", "contacts".
    * To create a parent/child state use a dot, e.g. "about.sales", "home.newest".
    * @param {object} definition State configuratino object.
    */
@@ -434,11 +436,11 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
    * @requires ui.router.util.$resolve
    * @requires ui.router.state.$stateParams
    *
-   * @property {object} params A param object, e.g. {sectionId: section.id)}, that 
+   * @property {object} params A param object, e.g. {sectionId: section.id)}, that
    * you'd like to test against the current active state.
-   * @property {object} current A reference to the state's config object. However 
+   * @property {object} current A reference to the state's config object. However
    * you passed it in. Useful for accessing custom data.
-   * @property {object} transition Currently pending transition. A promise that'll 
+   * @property {object} transition Currently pending transition. A promise that'll
    * resolve or reject.
    *
    * @description
@@ -499,11 +501,11 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * @methodOf ui.router.state.$state
      *
      * @description
-     * Convenience method for transitioning to a new state. `$state.go` calls 
-     * `$state.transitionTo` internally but automatically sets options to 
-     * `{ location: true, inherit: true, relative: $state.$current, notify: true }`. 
-     * This allows you to easily use an absolute or relative to path and specify 
-     * only the parameters you'd like to update (while letting unspecified parameters 
+     * Convenience method for transitioning to a new state. `$state.go` calls
+     * `$state.transitionTo` internally but automatically sets options to
+     * `{ location: true, inherit: true, relative: $state.$current, notify: true }`.
+     * This allows you to easily use an absolute or relative to path and specify
+     * only the parameters you'd like to update (while letting unspecified parameters
      * inherit from the current state.
      *
      * Some examples:
@@ -525,7 +527,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * </pre>
      *
      * @param {string} to Absolute State Name or Relative State Path.
-     * @param {object} params A map of the parameters that will be sent to the state, 
+     * @param {object} params A map of the parameters that will be sent to the state,
      * will populate $stateParams.
      * @param {object} options If Object is passed, object is an options hash.
      */
@@ -554,7 +556,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * </pre>
      *
      * @param {string} to Absolute State Name or Relative State Path.
-     * @param {object} params A map of the parameters that will be sent to the state, 
+     * @param {object} params A map of the parameters that will be sent to the state,
      * will populate $stateParams.
      * @param {object} options If Object is passed, object is an options hash.
      */
@@ -712,8 +714,10 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
         if ($state.transition !== transition) return TransitionSuperseded;
 
         $state.transition = null;
-        $rootScope.$broadcast('$stateChangeError', to.self, toParams, from.self, fromParams, error);
-        syncUrl();
+        evt = $rootScope.$broadcast('$stateChangeError', to.self, toParams, from.self, fromParams, error);
+        if (evt.defaultPrevented) {
+          syncUrl();
+        }
 
         return $q.reject(error);
       });
@@ -728,8 +732,8 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      *
      * @description
      * Similar to {@link ui.router.state.$state#methods_includes $state.includes},
-     * but only checks for the full state name. If params is supplied then it will be 
-     * tested for strict equality against the current active params object, so all params 
+     * but only checks for the full state name. If params is supplied then it will be
+     * tested for strict equality against the current active params object, so all params
      * must match with none missing and no extras.
      *
      * @example
@@ -741,7 +745,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * </pre>
      *
      * @param {string|object} stateName The state name or state object you'd like to check.
-     * @param {object} params A param object, e.g. `{sectionId: section.id}`, that you'd like 
+     * @param {object} params A param object, e.g. `{sectionId: section.id}`, that you'd like
      * to test against the current active state.
      * @returns {boolean} Returns true or false whether its the state or not.
      */
@@ -765,7 +769,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * @methodOf ui.router.state.$state
      *
      * @description
-     * A method to determine if the current active state is equal to or is the child of the 
+     * A method to determine if the current active state is equal to or is the child of the
      * state stateName. If any params are passed then they will be tested for a match as well.
      * Not all the parameters need to be passed, just the ones you'd like to test for equality.
      *
@@ -779,7 +783,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * </pre>
      *
      * @param {string} stateOrName A partial name to be searched for within the current state name.
-     * @param {object} params A param object, e.g. `{sectionId: section.id}`, 
+     * @param {object} params A param object, e.g. `{sectionId: section.id}`,
      * that you'd like to test against the current active state.
      * @returns {boolean} True or false
      */
@@ -850,7 +854,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
      * as a string. Without any arguments it'll return a array of all configured
      * state objects.
      *
-     * @param {string|object} stateOrName The name of the state for which you'd like 
+     * @param {string|object} stateOrName The name of the state for which you'd like
      * to get the original state configuration object for.
      * @returns {object} State configuration object or array of all objects.
      */

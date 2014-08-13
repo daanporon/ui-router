@@ -627,6 +627,9 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
         if ( to.self.reloadOnSearch !== false )
           syncUrl();
         $state.transition = null;
+        if (options.notify) {
+          $rootScope.$broadcast('$stateChangeAborted', to.self, toParams, from.self, fromParams);
+        }
         return $q.when($state.current);
       }
 

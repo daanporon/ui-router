@@ -1,6 +1,6 @@
 /**
  * State-based routing for AngularJS
- * @version v0.2.7-dev-2014-03-25
+ * @version v0.2.7-dev-2014-08-13
  * @link http://angular-ui.github.com/
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -1767,6 +1767,9 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
         if ( to.self.reloadOnSearch !== false )
           syncUrl();
         $state.transition = null;
+        if (options.notify) {
+          $rootScope.$broadcast('$stateChangeAborted', to.self, toParams, from.self, fromParams);
+        }
         return $q.when($state.current);
       }
 

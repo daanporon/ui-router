@@ -70,13 +70,12 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $ui
 
   var directive = {
     restrict: 'ECA',
-    controller: ['$element', function(element) {
-      var isDefault = true;
+    controller: ['$scope', '$element', '$attrs', function($scope, element, attrs) {
+      var isDefault = true,
+          parentEl  = element.parent();
 
       this.initial = undefined;
       this.anchor = undefined;
-      this.parentEl = undefined;
-
 
       var _cleanupLastView = function() {
         if (currentEl) {
@@ -89,6 +88,8 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $ui
           currentScope = null;
         }
       };
+
+      var inherited = parentEl.inheritedData('$uiView');
 
       var currentScope, currentEl, viewLocals,
           name      = attrs[directive.name] || attrs.name || '',
@@ -105,7 +106,7 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $ui
         'state': null 
       };
 
-      this.updateView = function(shouldAnimate) {
+      this.updateView = function(shouldAnimate, force) {
         var locals = $state.$current && $state.$current.locals[name];
 
         if (isDefault) {
@@ -117,20 +118,20 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $ui
           _cleanupLastView();
           currentEl = element.clone();
           currentEl.html(this.initial);
-          renderer(shouldAnimate).enter(currentEl, this.parentEl, this.anchor);
+          renderer(shouldAnimate).enter(currentEl, parentEl, this.anchor);
 
           currentScope = $scope.$new();
           $compile(currentEl.contents())(currentScope);
           return;
         }
 
-        if (locals === viewLocals) return; // nothing to do
+        if (!force && locals === viewLocals) return; // nothing to do
 
         _cleanupLastView();
 
         currentEl = element.clone();
         currentEl.html(locals.$template ? locals.$template : this.initial);
-        renderer(true).enter(currentEl, this.parentEl, this.anchor);
+        renderer(true).enter(currentEl, parentEl, this.anchor);
 
         currentEl.data('$uiView', view);
 
@@ -158,10 +159,9 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $ui
       };
 
     }],
-    compile: function (element, attrs) {
+    compile: function (element) {
       var initial   = element.html(),
-          anchor    = angular.element($document[0].createComment(' ui-view-anchor ')),
-          parentEl  = element.parent();
+          anchor    = angular.element($document[0].createComment(' ui-view-anchor '));
 
       element.prepend(anchor);
 
@@ -169,9 +169,6 @@ function $ViewDirective(   $state,   $compile,   $controller,   $injector,   $ui
 
         ctrl.initial = initial;
         ctrl.anchor = anchor;
-        ctrl.parentEl = parentEl;
-
-        var inherited = parentEl.inheritedData('$uiView');
 
         var eventHook = function () {
           if (viewIsUpdating) return;
